@@ -22,7 +22,7 @@
 #!/bin/bash
 ## 1) Create Ubuntu EC2 instance in AWS
 
-## 2a) create kops user
+## 2a) create kops user and add user to the sudoers group
 ``` sh
  sudo adduser kops
  sudo echo "kops  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/kops
@@ -34,12 +34,12 @@
  ```
  ## or 2b) install AWSCLI using the script below
  ```sh
- sudo apt update -y
- sudo apt install unzip wget -y
- sudo curl https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -o awscli-bundle.zip
- sudo apt install unzip python -y
- sudo unzip awscli-bundle.zip
- sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+sudo hostnamectl set-hostname kops
+sudo apt install unzip tree nano vim  -y
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+sudo su - kops
  ```
 ## 3) Install kops software on an ubuntu instance by running the commands below:
  	sudo apt install wget -y
@@ -74,15 +74,15 @@ You Created. --> Save.
     
        vi .bashrc
 	# Give Unique Name And S3 Bucket which you created.
-	export NAME=class30.k8s.local
-	export KOPS_STATE_STORE=s3://class30kops
+	export NAME=class35.k8s.local
+	export KOPS_STATE_STORE=s3://class35akops
  
       source .bashrc  
 	
 ### 7) Create sshkeys before creating cluster
 ```sh
-    ssh-keygen
- ```
+ssh-keygen -t rsa -b 4096
+```
 
 # 8) Create kubernetes cluster definitions on S3 bucket
 ```sh
